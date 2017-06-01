@@ -1,8 +1,8 @@
 <template>
-  <div id="app" style="background-image: url('/static/img/WhereYourMouseIs.f934b8d.jpeg')">
+  <div id="app">
     <div class="box">
-      <div class="box-item">
-        <span class="tips-text">Where Your Mouse Is ?</span>
+      <div class="box-item" @mouseover="mouseOverBox" @mouseleave="mouseLeaveBox">
+        <span class="tips-text">{{ msg }}</span>
       </div>
     </div>
     <router-view></router-view>
@@ -12,41 +12,64 @@
 <script>
   export default {
     name: 'app',
+    data() {
+      return {
+        msg: 'Where Your Mouse Is ?',
+        timeOutId: null,
+      };
+    },
+    methods: {
+      mouseOverBox() {
+        clearTimeout(this.timeOutId);
+        this.timeOutId = setTimeout(() => {
+          this.msg = 'It Here!';
+        }, 200);
+      },
+      mouseLeaveBox() {
+        clearTimeout(this.timeOutId);
+        this.timeOutId = setTimeout(() => {
+          this.msg = 'Where Your Mouse Is ?';
+        }, 400);
+      },
+    },
   };
 </script>
 
 <style>
   #app {
-    width: 100%;
-    height: 100vh;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    cursor: none;
     display: flex;
     flex-flow: column wrap;
     justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background: url('./assets/WhereYourMouseIs.jpeg') center center no-repeat;
+    background-size: cover;
+    cursor: none;
   }
 
-  .box{
+  .box {
     align-items: center;
     text-align: center;
   }
+
   .tips-text {
     display: inline-block;
+    width: 380px;
     padding: 20px;
     font-size: 1.8rem;
     font-weight: bold;
-    transition: .5s;
     cursor: default;
+    transition: .8s;
   }
-  .box-item{
+
+  .box-item {
     display: inline-block;
   }
 
   .box-item:hover .tips-text {
-    transform: rotateX(360deg);
-    background: rgba(255, 255, 255, 0.7);
+    color: #fff;
+    transform: rotateX(360deg) scale(1.1);
+    background: rgba(0, 0, 0, 0.7);
   }
 
   body {
